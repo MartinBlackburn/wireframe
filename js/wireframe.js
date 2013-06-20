@@ -18,13 +18,11 @@ Wireframe = function()
     var changeBGButton = $(".changeBGButton").hide();
     var addColumnButton = $(".addColumnButton").hide();
     
-    //context menu on right click
-    //select what was right clicked, if anything
-    //show menu
+    /*----------------------------------------------------------------------------------------------------------------*\
+        CONTEXT MENU
+    \*----------------------------------------------------------------------------------------------------------------*/
     $(document).on("contextmenu", function(event) {
         event.preventDefault();
-        
-        console.log("showing context menu");
         
         //select hovered element
         selectElement($(".hover"));
@@ -35,9 +33,7 @@ Wireframe = function()
         controls.css({"top": yPos + "px", "left": xPos + "px"}).show();
         
         //if row selected
-        if(whatSelected() == "row") {
-            console.log("showing row controls");
-            
+        if(whatSelected() == "row") {            
             addRowButton.hide();
             removeSelectedButton.show();
             changeBGButton.show();
@@ -45,9 +41,7 @@ Wireframe = function()
         }
         
         //if column selected
-        if(whatSelected() == "column") {
-            console.log("showing column controls");
-            
+        if(whatSelected() == "column") {            
             addRowButton.hide();
             removeSelectedButton.show();
             changeBGButton.show();
@@ -55,9 +49,7 @@ Wireframe = function()
         }
         
         //if nothing selected
-        if(whatSelected() == null) {
-            console.log("showing no controls");
-            
+        if(whatSelected() == null) {            
             addRowButton.show();
             removeSelectedButton.hide();
             changeBGButton.hide();
@@ -66,137 +58,50 @@ Wireframe = function()
     });
     
     //hide menu on click
-    $(document).click(function (event) {            
+    $(document).on("click", function (event) {            
         controls.hide();
     });  
     
-    //change background colour of select element
-    changeBGButton.click(function(event) {
+    
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*\
+        BUTTON HANDLERS
+    \*----------------------------------------------------------------------------------------------------------------*/
+    //change background color of selected
+    changeBGButton.on("click", function(event) {
         event.preventDefault();
         
         $(".selected").toggleClass("altBG");
     });
     
-    //add a new row at the end
-    addRowButton.click(function(event) {
+    //add a new row
+    addRowButton.on("click", function(event) {
         event.preventDefault();
         
-        addRow();
-        
-        bindControls();
+        addElement("row");
     });
     
-    function addRow()
-    {
-        console.log("adding row");
-        
-        //row and content elements
-        var row = $("<div class='row'></div>");
-        var content = $("<div class='content'></div>");
-        
-        //add content to the row
-        row.prepend(content);
-        
-        //add row to the bottom
-        body.append(row);
-        
-        //select the new row
-        selectElement(row);
-    }
-    
-    //remove selected item, and anything within it
-    removeSelectedButton.click(function(event) {
+    //remove selected item
+    removeSelectedButton.on("click", function(event) {
         event.preventDefault();
         
-        removeSelected();
-        
+        $(".selected").remove();        
         bindControls();
     });
-    
-    function removeSelected()
-    {
-        if(whatSelected() == "row") {
-            console.log("removing selected row");
-        }
-        
-        if(whatSelected() == "column") {
-            console.log("removing selected column");
-        }
-        
-        $(".selected").remove();
-    }
     
     //add column, based on size given (1 - 12)
-    addColumnButton.click(function(event) {
+    addColumnButton.on("click", function(event) {
         event.preventDefault();
         
         var size = prompt("Please enter column size (from 1 - 12)", "12");
         
         if(size <= 12 && size >= 1)
         {
-            addColumn(size);
-        
-            bindControls();
+            addElement("column", size);
         }
     });
-    
-    function addColumn(size)
-    {
-        console.log("adding column");
-        
-        //column element
-        var column = " <div class='column-" + size + "'></div>";
-        
-        //add column to selected row
-        $(".row.selected .content").append(column);
-    }
-    
-    //center all columns in a row
-    function centerColumns()
-    {
-        
-    }
-    
-    //add heading to column, based on size (1-6)
-    function addHeading(size)
-    {
-        
-    }
-    
-    //add text to column
-    function addText()
-    {
-        
-    }
-    
-    //add list to column
-    function addList()
-    {
-        
-    }
-    
-    //add image (portrait or landscape) to column
-    function addImage(type)
-    {
-        
-    }
-    
-    //add button to column
-    function addButton()
-    {
-        
-    }
-    
-    //add nav to column
-    function addNav()
-    {
-        
-    }
-    
-    //make all columns the same height within a row
-    function equaliseColumns() {
-        
-    }
     
     //update all controls
     function bindControls()
@@ -233,24 +138,54 @@ Wireframe = function()
         });
     }
     
-    //select an element, hide controls
+    
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*\
+        ADD ELEMENT
+    \*----------------------------------------------------------------------------------------------------------------*/
+    function addElement(element, size)
+    {
+        switch (element)
+        {
+            case "row":
+                //add row to the bottom
+                $.get("elements/row.html", function(data) {
+                    body.append(data);
+                    bindControls();
+                    selectElement($(".row").last());
+                });
+                break;
+            case "column":
+                //add column to selected row
+                $.get("elements/column-" + size + ".html", function(data) {
+                    $(".row.selected .content").append(data);
+                    bindControls();
+                });
+                break;
+        }
+    }
+    
+    
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*\
+        SELECT & UNSELECT ELEMENTS
+    \*----------------------------------------------------------------------------------------------------------------*/
+    //select an element
     function selectElement(element)
     {
-        //unselect all elements
-        unselectElements();
-        
-        //add selected class
-        $(element).addClass("selected");
-        
+        unselectElements();        
+        $(element).addClass("selected");        
         controls.hide();
     }
     
-    //unselect all elements, hide controls
+    //unselect all elements
     function unselectElements()
     {
-        //unselect all elements
-        $(".selected").removeClass("selected");
-        
+        $(".selected").removeClass("selected");        
         controls.hide();
     }
     
@@ -259,19 +194,24 @@ Wireframe = function()
     {
         //if row selected
         if($(".row").hasClass("selected")) {
-            console.log("row selected");
             return "row";
         }
         
         //if column selected
         if($("[class*='column-']").hasClass("selected")) {
-            console.log("column selected");
             return "column";
         }
         
         return null;
     }
     
+    
+    
+    
+    
+    /*----------------------------------------------------------------------------------------------------------------*\
+        SAVE & LOAD URL
+    \*----------------------------------------------------------------------------------------------------------------*/
     //save to url
     function save()
     {
