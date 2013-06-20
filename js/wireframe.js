@@ -12,21 +12,74 @@ https://github.com/MartinBlackburn/wireframe
 Wireframe = function() 
 {   
     var body = $("body");
+    var controls = $(".mainControls").hide();
     var addRowButton = $(".addRowButton");
     var removeSelectedButton = $(".removeSelectedButton").hide();
     var changeBGButton = $(".changeBGButton").hide();
     var addColumnButton = $(".addColumnButton").hide();
     
+    //context menu on right click
+    //select what was right clicked, if anything
+    //show menu
+    $(document).on("contextmenu", function(event) {
+        event.preventDefault();
+        
+        console.log("showing context menu");
+        
+        //select hovered element
+        selectElement($(".hover"));
+        
+        //position context menu
+        var xPos = event.pageX;
+        var yPos = event.pageY;        
+        controls.css({"top": yPos + "px", "left": xPos + "px"}).show();
+        
+        //if row selected
+        if(whatSelected() == "row") {
+            console.log("showing row controls");
+            
+            addRowButton.hide();
+            removeSelectedButton.show();
+            changeBGButton.show();
+            addColumnButton.show();
+        }
+        
+        //if column selected
+        if(whatSelected() == "column") {
+            console.log("showing column controls");
+            
+            addRowButton.hide();
+            removeSelectedButton.show();
+            changeBGButton.show();
+            addColumnButton.hide();
+        }
+        
+        //if nothing selected
+        if(whatSelected() == null) {
+            console.log("showing no controls");
+            
+            addRowButton.show();
+            removeSelectedButton.hide();
+            changeBGButton.hide();
+            addColumnButton.hide();
+        }
+    });
+    
+    //hide menu on click
+    $(document).click(function (event) {            
+        controls.hide();
+    });  
+    
     //change background colour of select element
     changeBGButton.click(function(event) {
-        event.preventDefault()
+        event.preventDefault();
         
         $(".selected").toggleClass("altBG");
     });
     
     //add a new row at the end
     addRowButton.click(function(event) {
-        event.preventDefault()
+        event.preventDefault();
         
         addRow();
         
@@ -53,7 +106,7 @@ Wireframe = function()
     
     //remove selected item, and anything within it
     removeSelectedButton.click(function(event) {
-        event.preventDefault()
+        event.preventDefault();
         
         removeSelected();
         
@@ -75,7 +128,7 @@ Wireframe = function()
     
     //add column, based on size given (1 - 12)
     addColumnButton.click(function(event) {
-        event.preventDefault()
+        event.preventDefault();
         
         var size = prompt("Please enter column size (from 1 - 12)", "12");
         
@@ -157,7 +210,12 @@ Wireframe = function()
             
             event.stopImmediatePropagation();
             
-            selectElement($(event.delegateTarget));
+            if($(event.delegateTarget).hasClass("selected"))
+            {
+                unselectElements();
+            } else {
+                selectElement($(event.delegateTarget));
+            }
         });
         
         //add hover effects
@@ -175,57 +233,25 @@ Wireframe = function()
         });
     }
     
-    //select an element, update main controls with new options
-    //deselect, if it is selected
+    //select an element, hide controls
     function selectElement(element)
     {
-        if($(element).hasClass("selected"))
-        {
-            //unselect all elements
-            $(".selected").removeClass("selected");
-        } else {
-          //unselect all elements
-            $(".selected").removeClass("selected");
-            
-            //add selected class
-            $(element).addClass("selected");
-        }
+        //unselect all elements
+        unselectElements();
         
-        updateMainControls();
+        //add selected class
+        $(element).addClass("selected");
+        
+        controls.hide();
     }
     
-    //update main controls, with new controls, depending what is selected
-    function updateMainControls()
+    //unselect all elements, hide controls
+    function unselectElements()
     {
-        //if row selected
-        if(whatSelected() == "row") {
-            console.log("showing row controls");
-            
-            addRowButton.hide();
-            removeSelectedButton.show();
-            changeBGButton.show();
-            addColumnButton.show();
-        }
+        //unselect all elements
+        $(".selected").removeClass("selected");
         
-        //if column selected
-        if(whatSelected() == "column") {
-            console.log("showing column controls");
-            
-            addRowButton.hide();
-            removeSelectedButton.show();
-            changeBGButton.show();
-            addColumnButton.hide();
-        }
-        
-        //if nothing selected
-        if(whatSelected() == null) {
-            console.log("showing no controls");
-            
-            addRowButton.show();
-            removeSelectedButton.hide();
-            changeBGButton.hide();
-            addColumnButton.hide();
-        }
+        controls.hide();
     }
     
     //return what is selected (row or column)
