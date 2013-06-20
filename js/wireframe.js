@@ -13,8 +13,16 @@ Wireframe = function()
 {   
     var body = $("body");
     var addRowButton = $(".addRowButton");
-    var removeSelectedButton = $(".removeSelectedButton");
+    var removeSelectedButton = $(".removeSelectedButton").hide();
+    var changeBGButton = $(".changeBGButton").hide();
     var addColumnButton = $(".addColumnButton").hide();
+    
+    //change background colour of select element
+    changeBGButton.click(function(event) {
+        event.preventDefault()
+        
+        $(".selected").toggleClass("altBG");
+    });
     
     //add a new row at the end
     addRowButton.click(function(event) {
@@ -132,12 +140,6 @@ Wireframe = function()
         
     }
     
-    //change background of current item (row or column)
-    function changeBackground(element)
-    {
-        $(element).toggleClass("altBG");
-    }
-    
     //make all columns the same height within a row
     function equaliseColumns() {
         
@@ -174,13 +176,20 @@ Wireframe = function()
     }
     
     //select an element, update main controls with new options
+    //deselect, if it is selected
     function selectElement(element)
     {
-        //unselect all elements
-        $(".selected").removeClass("selected");
-        
-        //add selected class
-        $(element).addClass("selected");
+        if($(element).hasClass("selected"))
+        {
+            //unselect all elements
+            $(".selected").removeClass("selected");
+        } else {
+          //unselect all elements
+            $(".selected").removeClass("selected");
+            
+            //add selected class
+            $(element).addClass("selected");
+        }
         
         updateMainControls();
     }
@@ -192,6 +201,9 @@ Wireframe = function()
         if(whatSelected() == "row") {
             console.log("showing row controls");
             
+            addRowButton.hide();
+            removeSelectedButton.show();
+            changeBGButton.show();
             addColumnButton.show();
         }
         
@@ -199,6 +211,19 @@ Wireframe = function()
         if(whatSelected() == "column") {
             console.log("showing column controls");
             
+            addRowButton.hide();
+            removeSelectedButton.show();
+            changeBGButton.show();
+            addColumnButton.hide();
+        }
+        
+        //if nothing selected
+        if(whatSelected() == null) {
+            console.log("showing no controls");
+            
+            addRowButton.show();
+            removeSelectedButton.hide();
+            changeBGButton.hide();
             addColumnButton.hide();
         }
     }
