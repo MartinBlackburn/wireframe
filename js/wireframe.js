@@ -79,19 +79,15 @@ Wireframe = function()
         }
     });
     
-    
     function addColumn(size)
     {
         console.log("adding column");
         
         //column element
-        var column = $("<div class='column-" + size + "'></div>");
+        var column = " <div class='column-" + size + "'></div>";
         
         //add column to selected row
         $(".row.selected .content").append(column);
-        
-        //selected the new column
-        selectElement(column);
     }
     
     //center all columns in a row
@@ -151,15 +147,29 @@ Wireframe = function()
     function bindControls()
     {
         //unbind all current controls
-        $('.row, [class*="column-"]').unbind();
+        $('.row, [class*="column-"]').off();
         
         //add all new controls
-        $('.row, [class*="column-"]').click(function(event) {
+        $('.row, [class*="column-"]').on("click", function(event) {
             event.preventDefault()
             
             event.stopImmediatePropagation();
             
             selectElement($(event.delegateTarget));
+        });
+        
+        //add hover effects
+        $('.row, [class*="column-"]').on("mouseover", function(event) {
+            event.stopImmediatePropagation();
+            
+            $(event.delegateTarget).addClass("hover");
+        });
+        
+        //remove hover effect
+        $('.row, [class*="column-"]').on("mouseout", function(event) {
+            event.stopImmediatePropagation();
+            
+            $(event.delegateTarget).removeClass("hover");
         });
     }
     
