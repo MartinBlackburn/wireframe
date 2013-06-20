@@ -13,7 +13,8 @@ Wireframe = function()
 {   
     var body = $("body");
     var addRowButton = $(".addRowButton");
-    var removeRowButton = $(".removeRowButton");
+    var removeSelectedButton = $(".removeSelectedButton");
+    var addColumnButton = $(".addColumnButton").hide();
     
     //add a new row at the end
     addRowButton.click(function(event) {
@@ -24,7 +25,8 @@ Wireframe = function()
         bindControls();
     });
     
-    function addRow() {
+    function addRow()
+    {
         console.log("adding row");
         
         //row and content elements
@@ -37,70 +39,106 @@ Wireframe = function()
         //add row to the bottom
         body.append(row);
         
-        //selected the new row
+        //select the new row
         selectElement(row);
     }
     
-    //remove a row, and anything within it
-    removeRowButton.click(function(event) {
+    //remove selected item, and anything within it
+    removeSelectedButton.click(function(event) {
         event.preventDefault()
         
-        removeRow();
+        removeSelected();
         
         bindControls();
     });
     
-    function removeRow() {
-        $(".row.selected").remove();
+    function removeSelected()
+    {
+        if(whatSelected() == "row") {
+            console.log("removing selected row");
+        }
+        
+        if(whatSelected() == "column") {
+            console.log("removing selected column");
+        }
+        
+        $(".selected").remove();
     }
     
-    //add column, based on size given
-    function addColumn(size) {
+    //add column, based on size given (1 - 12)
+    addColumnButton.click(function(event) {
+        event.preventDefault()
         
+        var size = prompt("Please enter column size (from 1 - 12)", "12");
+        
+        if(size <= 12 && size >= 1)
+        {
+            addColumn(size);
+        
+            bindControls();
+        }
+    });
+    
+    
+    function addColumn(size)
+    {
+        console.log("adding column");
+        
+        //column element
+        var column = $("<div class='column-" + size + "'></div>");
+        
+        //add column to selected row
+        $(".row.selected .content").append(column);
+        
+        //selected the new column
+        selectElement(column);
     }
     
     //center all columns in a row
-    function centerColumns() {
-        
-    }
-    
-    //remove a column, and anything within it
-    function removeColumn() {
+    function centerColumns()
+    {
         
     }
     
     //add heading to column, based on size (1-6)
-    function addHeading(size) {
+    function addHeading(size)
+    {
         
     }
     
     //add text to column
-    function addText() {
+    function addText()
+    {
         
     }
     
     //add list to column
-    function addList() {
+    function addList()
+    {
         
     }
     
     //add image (portrait or landscape) to column
-    function addImage(type) {
+    function addImage(type)
+    {
         
     }
     
     //add button to column
-    function addButton() {
+    function addButton()
+    {
         
     }
     
     //add nav to column
-    function addNav() {
+    function addNav()
+    {
         
     }
     
     //change background of current item (row or column)
-    function changeBackground(element) {
+    function changeBackground(element)
+    {
         $(element).toggleClass("altBG");
     }
     
@@ -110,20 +148,24 @@ Wireframe = function()
     }
     
     //update all controls
-    function bindControls() {
+    function bindControls()
+    {
         //unbind all current controls
-        $('.row, .column-[class*="column-"]').unbind();
+        $('.row, [class*="column-"]').unbind();
         
         //add all new controls
-        $('.row, .column-[class*="column-"]').click(function(event) {
+        $('.row, [class*="column-"]').click(function(event) {
             event.preventDefault()
             
-            selectElement($(this));
+            event.stopImmediatePropagation();
+            
+            selectElement($(event.delegateTarget));
         });
     }
     
     //select an element, update main controls with new options
-    function selectElement(element) {
+    function selectElement(element)
+    {
         //unselect all elements
         $(".selected").removeClass("selected");
         
@@ -134,19 +176,50 @@ Wireframe = function()
     }
     
     //update main controls, with new controls, depending what is selected
-    function updateMainControls() {
+    function updateMainControls()
+    {
         //if row selected
+        if(whatSelected() == "row") {
+            console.log("showing row controls");
+            
+            addColumnButton.show();
+        }
         
         //if column selected
+        if(whatSelected() == "column") {
+            console.log("showing column controls");
+            
+            addColumnButton.hide();
+        }
+    }
+    
+    //return what is selected (row or column)
+    function whatSelected()
+    {
+        //if row selected
+        if($(".row").hasClass("selected")) {
+            console.log("row selected");
+            return "row";
+        }
+        
+        //if column selected
+        if($("[class*='column-']").hasClass("selected")) {
+            console.log("column selected");
+            return "column";
+        }
+        
+        return null;
     }
     
     //save to url
-    function save() {
+    function save()
+    {
         
     }
     
     //load from url
-    function load() {
+    function load()
+    {
         
     }
 };

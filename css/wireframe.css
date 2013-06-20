@@ -44,12 +44,12 @@
 }
 
 .selected {
-	background: #CCE2ED;
+	background: #DCEEF7;
 }
 
 .row:hover,
 [class*="column-"]:hover {
-	background: #CCE2ED;
+	background: #DCEEF7;
 }
 
 
