@@ -75,6 +75,10 @@ Wireframe = function()
                 //add an element
                 addElement($(this).data("element"));
                 break;
+            case "center":
+                //center columns with selected row
+                $(".selected .content").toggleClass("centered");
+                break;
             case "remove":
                 //remove selected element
                 $(".selected").remove();
