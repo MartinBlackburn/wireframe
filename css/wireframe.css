@@ -92,9 +92,10 @@ label {
 	font-weight: bold;
 }
 
-.list ul {
+ul.list {
+	margin-left: 20px;
 	margin-bottom: 1em;
-	list-style: circle;
+	list-style: disc;
 }
 
 .text {
