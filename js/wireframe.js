@@ -161,19 +161,18 @@ Wireframe = function()
     /*----------------------------------------------------------------------------------------------------------------*\
         SELECT & UNSELECT ELEMENTS
     \*----------------------------------------------------------------------------------------------------------------*/
-    //select an element
-    function selectElement(element)
-    {
-        unselectElements();        
-        $(element).addClass("selected");        
-        controls.hide();
-    }
-    
     //unselect all elements
     function unselectElements()
     {
         $(".selected").removeClass("selected");        
         controls.hide();
+    }
+    
+    //select an element
+    function selectElement(element)
+    {
+        unselectElements();        
+        $(element).addClass("selected");
     }
     
     //return what is selected (row or column)
