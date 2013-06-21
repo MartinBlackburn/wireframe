@@ -19,10 +19,36 @@
 </head>
 <body>   
     <div class="mainControls">
-        <a class="addRowButton" href="#">Add row</a>
-        <a class="removeSelectedButton" href="#">Remove</a>
-        <a class="changeBGButton" href="#">Toggle background</a>
-        <a class="addColumnButton" href="#">Add column</a>
+        <div class="action rowRelated defaultAction" data-action="add" data-element="row">Add row</div>
+        <div class="action rowRelated columnRelated" data-action="remove">Remove</div>
+        <div class="action rowRelated columnRelated" data-action="toggleBG">Toggle background</div>
+        <div class="hasDropdown rowRelated">
+            <div class="dropdownToggle">Add column</div>
+            <div class="dropdown">
+                <div class="action" data-action="add" data-element="column-1">1 column</div>
+                <div class="action" data-action="add" data-element="column-2">2 columns</div>
+                <div class="action" data-action="add" data-element="column-3">3 columns</div>
+                <div class="action" data-action="add" data-element="column-4">4 columns</div>
+                <div class="action" data-action="add" data-element="column-5">5 columns</div>
+                <div class="action" data-action="add" data-element="column-6">6 columns</div>
+                <div class="action" data-action="add" data-element="column-7">7 columns</div>
+                <div class="action" data-action="add" data-element="column-8">8 columns</div>
+                <div class="action" data-action="add" data-element="column-9">9 columns</div>
+                <div class="action" data-action="add" data-element="column-10">10 columns</div>
+                <div class="action" data-action="add" data-element="column-11">11 columns</div>
+                <div class="action" data-action="add" data-element="column-12">12 columns</div>
+            </div>
+        </div>
+        <div class="hasDropdown columnRelated">
+            <div class="dropdownToggle">Add content</div>
+            <div class="dropdown">
+                <div class="action" data-action="add" data-element="heading">Heading</div>
+                <div class="action" data-action="add" data-element="nav">Nav</div>
+                <div class="action" data-action="add" data-element="text">Text</div>
+                <div class="action" data-action="add" data-element="image">Image</div>
+                <div class="action" data-action="add" data-element="form">Form</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -13,10 +13,10 @@ Wireframe = function()
 {   
     var body = $("body");
     var controls = $(".mainControls").hide();
-    var addRowButton = $(".addRowButton");
-    var removeSelectedButton = $(".removeSelectedButton").hide();
-    var changeBGButton = $(".changeBGButton").hide();
-    var addColumnButton = $(".addColumnButton").hide();
+    var actions = $(".action");
+    var rowActions = $(".rowRelated");
+    var columnActions = $(".columnRelated");
+    var defaultAction = $(".defaultAction");
     
     /*----------------------------------------------------------------------------------------------------------------*\
         CONTEXT MENU
@@ -33,27 +33,24 @@ Wireframe = function()
         controls.css({"top": yPos + "px", "left": xPos + "px"}).show();
         
         //if row selected
-        if(whatSelected() == "row") {            
-            addRowButton.hide();
-            removeSelectedButton.show();
-            changeBGButton.show();
-            addColumnButton.show();
+        if(whatSelected() == "row") { 
+            columnActions.hide();
+            defaultAction.hide();
+            rowActions.show();
         }
         
         //if column selected
-        if(whatSelected() == "column") {            
-            addRowButton.hide();
-            removeSelectedButton.show();
-            changeBGButton.show();
-            addColumnButton.hide();
+        if(whatSelected() == "column") {  
+            rowActions.hide();
+            defaultAction.hide();
+            columnActions.show();
         }
         
         //if nothing selected
-        if(whatSelected() == null) {            
-            addRowButton.show();
-            removeSelectedButton.hide();
-            changeBGButton.hide();
-            addColumnButton.hide();
+        if(whatSelected() == null) {   
+            columnActions.hide();
+            rowActions.hide();
+            defaultAction.show();
         }
     });
     
@@ -69,37 +66,23 @@ Wireframe = function()
     /*----------------------------------------------------------------------------------------------------------------*\
         BUTTON HANDLERS
     \*----------------------------------------------------------------------------------------------------------------*/
-    //change background color of selected
-    changeBGButton.on("click", function(event) {
-        event.preventDefault();
-        
-        $(".selected").toggleClass("altBG");
-    });
-    
-    //add a new row
-    addRowButton.on("click", function(event) {
-        event.preventDefault();
-        
-        addElement("row");
-    });
-    
-    //remove selected item
-    removeSelectedButton.on("click", function(event) {
-        event.preventDefault();
-        
-        $(".selected").remove();        
-        bindControls();
-    });
-    
-    //add column, based on size given (1 - 12)
-    addColumnButton.on("click", function(event) {
-        event.preventDefault();
-        
-        var size = prompt("Please enter column size (from 1 - 12)", "12");
-        
-        if(size <= 12 && size >= 1)
+    actions.on("click", function(event) {
+        var actionType = $(this).data("action");
+                
+        switch (actionType)
         {
-            addElement("column", size);
+            case "add":
+                //add an element
+                addElement($(this).data("element"));
+                break;
+            case "remove":
+                //remove selected element
+                $(".selected").remove();
+                break;
+            case "toggleBG":
+                //change background color of selected
+                $(".selected").toggleClass("altBG");
+                break;
         }
     });
     
@@ -145,26 +128,26 @@ Wireframe = function()
     /*----------------------------------------------------------------------------------------------------------------*\
         ADD ELEMENT
     \*----------------------------------------------------------------------------------------------------------------*/
-    function addElement(element, size)
+    function addElement(element)
     {
-        switch (element)
-        {
-            case "row":
-                //add row to the bottom
-                $.get("elements/row.html", function(data) {
-                    body.append(data);
-                    bindControls();
-                    selectElement($(".row").last());
-                });
-                break;
-            case "column":
-                //add column to selected row
-                $.get("elements/column-" + size + ".html", function(data) {
-                    $(".row.selected .content").append(data);
-                    bindControls();
-                });
-                break;
+        //select where to append the element
+        if(element == "row") {
+            var addToEnd = body;
+        } else if(element.indexOf("column-") !== -1) {
+            var addToEnd = $(".row.selected .content");
+        } else {
+            var addToEnd = $(".selected");
         }
+        
+        //get the element and add it
+        $.get("elements/" + element + ".html", function(data) {
+            addToEnd.append(data);
+            bindControls();
+            
+            if(element == "row") {
+                $(".row").last().addClass("selected");
+            }
+        });
     }
     
     

@@ -3,9 +3,14 @@
 \*----------------------------------------------------------------------------------------------------------------*/
 .mainControls {
 	border: 1px solid #ccc;
-	padding: 10px;
+	padding: 5px;
 	
 	background: #f5f5f5;
+	
+	font-size: 0.85em;
+	color: #333;
+	
+	cursor: pointer;
 	
 	position: absolute;
 	top: 0;
@@ -14,10 +19,26 @@
 	z-index: 1;
 }
 
-.mainControls a {
-	display: block;
+.mainControls .hasDropdown {
+    position: relative;
 }
 
+.mainControls .dropdown {
+	border: 1px solid #ccc;
+    padding: 5px;
+	display: none;
+	
+	background: #f5f5f5;
+	
+	position: absolute;
+	right: -50%;
+	top: 0;
+}
+
+.mainControls .dropdownToggle:hover + .dropdown,
+.mainControls .dropdown:hover {
+	display: block;
+}
 
 
 
