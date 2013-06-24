@@ -18,6 +18,16 @@ Wireframe = function()
     var columnActions = $(".columnRelated");
     var defaultAction = $(".defaultAction");
     
+    //get URL to load, if any
+    var url = "r:c12:r:c6:c6";
+    var loadingElements = url.split(":");
+    var isLoading = true;
+    
+    console.log(loadingElements);
+    
+    //load from URL
+    load();
+    
     /*----------------------------------------------------------------------------------------------------------------*\
         CONTEXT MENU
     \*----------------------------------------------------------------------------------------------------------------*/
@@ -152,10 +162,16 @@ Wireframe = function()
             bindControls();
             
             if(element == "row") {
+                unselectElements();
                 $(".row").last().addClass("selected");
             }
             
-            save();
+            if(isLoading)
+            {
+                load();
+            } else {
+                save();
+            }
         });
     }
     
@@ -203,13 +219,15 @@ Wireframe = function()
     /*----------------------------------------------------------------------------------------------------------------*\
         SAVE & LOAD URL
     \*----------------------------------------------------------------------------------------------------------------*/
-    //save to url
+    //save to URL
     function save()
     {
         var url = "";
         
-        //add rows to url
-        $(".row").each(function()
+        //add rows to URL
+        var numRows = $('.row').length;
+        
+        $(".row").each(function(rowIndex)
         {
             var row = $(this);
             
@@ -226,12 +244,13 @@ Wireframe = function()
             
             url += ":";
             
-            //add columns to url
-            row.find("[class*='column-']").each(function()
+            //add columns to URL
+            var numColumns = row.find("[class*='column-']").length;
+            row.find("[class*='column-']").each(function(colIndex)
             {
                 var column = $(this);
                 
-                url += "c-";
+                url += "c";
                 
                 if(column.hasClass("column-1"))
                 {
@@ -282,19 +301,73 @@ Wireframe = function()
                     url += "12";
                 }
                 
-                url += ":";
+                //added separator if not last column
+                if (colIndex != numColumns - 1) {
+                    url += ":";
+                }
             });
             
-            url += "|";
+            //added separator if not last row
+            if (rowIndex != numRows - 1) {
+                url += ":";
+            }
         });
         
         console.log(url);
     }
     
-    //load from url
+    //load from URL
     function load()
-    {
+    {              
+        console.log("load");
+        //get next element, remove it from the array
+        var element = loadingElements.shift();
         
+        console.log(element);
+        
+        //load it
+        switch (element)
+        {
+            case "r":
+                addElement("row");
+                break;
+            case "c1":
+                addElement("column-1");
+                break;
+            case "c2":
+                addElement("column-2");
+                break;
+            case "c3":
+                addElement("column-3");
+                break;
+            case "c4":
+                addElement("column-4");
+                break;    
+            case "c5":
+                addElement("column-5");
+                break;
+            case "c6":
+                addElement("column-6");
+                break;
+            case "c7":
+                addElement("column-7");
+                break;
+            case "c8":
+                addElement("column-8");
+                break;
+            case "c9":
+                addElement("column-9");
+                break;
+            case "c10":
+                addElement("column-10");
+                break;
+            case "c11":
+                addElement("column-11");
+                break;
+            case "c12":
+                addElement("column-12");
+                break;
+        }        
     }
 };
 
