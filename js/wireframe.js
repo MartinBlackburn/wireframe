@@ -318,6 +318,11 @@ Wireframe = function()
         //get next element, remove it from the array
         var element = loadingElements.shift();
         
+        if(!element)
+        {
+            isLoading = false;
+        }
+        
         //load it
         switch (element)
         {
