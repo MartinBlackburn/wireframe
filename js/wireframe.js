@@ -19,7 +19,7 @@ Wireframe = function()
     var defaultAction = $(".defaultAction");
     
     //get URL to load, if any
-    var url = "r:c12:n:r:c6:c6";
+    var url = "r:c12:n:r:c6:c6:r:c4:c4:c4:";
     var loadingElements = url.split(":");
     var isLoading = true;
     
@@ -281,16 +281,22 @@ Wireframe = function()
                     url += "12";
                 }
                 
-                //added separator if not last column
-                if (colIndex != numColumns - 1) {
-                    url += ":";
-                }
-            });
-            
-            //added separator if not last row
-            if (rowIndex != numRows - 1) {
                 url += ":";
-            }
+                
+                //add element to URL
+                var numElements = column.children().length;
+                column.children().each(function(elementIndex)
+                {
+                    var element = $(this);
+                    
+                    if(element.hasClass("nav"))
+                    {
+                        url += "n";
+                    }
+                    
+                    url += ":";
+                });
+            });
         });
     }
     
@@ -303,6 +309,7 @@ Wireframe = function()
         //set loading to false when no element left
         if(!element) {
             isLoading = false;
+            unselectElements();
         }
         
         //load it
