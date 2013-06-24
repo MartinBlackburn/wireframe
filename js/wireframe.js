@@ -244,54 +244,52 @@ Wireframe = function()
                 
                 if(column.hasClass("column-1"))
                 {
-                    url += "1";
+                    url += "1:";
                 }
                 if(column.hasClass("column-2"))
                 {
-                    url += "2";
+                    url += "2:";
                 }
                 if(column.hasClass("column-3"))
                 {
-                    url += "3";
+                    url += "3:";
                 }
                 if(column.hasClass("column-4"))
                 {
-                    url += "4";
+                    url += "4:";
                 }
                 if(column.hasClass("column-5"))
                 {
-                    url += "5";
+                    url += "5:";
                 }
                 if(column.hasClass("column-6"))
                 {
-                    url += "6";
+                    url += "6:";
                 }
                 if(column.hasClass("column-7"))
                 {
-                    url += "7";
+                    url += "7:";
                 }
                 if(column.hasClass("column-8"))
                 {
-                    url += "8";
+                    url += "8:";
                 }
                 if(column.hasClass("column-9"))
                 {
-                    url += "9";
+                    url += "9:";
                 }
                 if(column.hasClass("column-10"))
                 {
-                    url += "10";
+                    url += "10:";
                 }
                 if(column.hasClass("column-11"))
                 {
-                    url += "11";
+                    url += "11:";
                 }
                 if(column.hasClass("column-12"))
                 {
-                    url += "12";
+                    url += "12:";
                 }
-                
-                url += ":";
                 
                 //add element to URL
                 var numElements = column.children().length;
@@ -301,10 +299,38 @@ Wireframe = function()
                     
                     if(element.hasClass("nav"))
                     {
-                        url += "n";
+                        url += "n:";
                     }
                     
-                    url += ":";
+                    if(element.hasClass("text"))
+                    {
+                        url += "t:";
+                    }
+                    
+                    if(element.is("h1"))
+                    {
+                        url += "h1:";
+                    }
+                    if(element.is("h2"))
+                    {
+                        url += "h2:";
+                    }
+                    if(element.is("h3"))
+                    {
+                        url += "h3:";
+                    }
+                    if(element.is("h4"))
+                    {
+                        url += "h4:";
+                    }
+                    if(element.is("h5"))
+                    {
+                        url += "h5:";
+                    }
+                    if(element.is("h6"))
+                    {
+                        url += "h6:";
+                    }
                 });
             });
         });
@@ -368,6 +394,27 @@ Wireframe = function()
                 break;
             case "n":
                 addElement("nav", $("[class*='column-']").last());
+                break;
+            case "t":
+                addElement("text", $("[class*='column-']").last());
+                break;
+            case "h1":
+                addElement("h1", $("[class*='column-']").last());
+                break;
+            case "h2":
+                addElement("h2", $("[class*='column-']").last());
+                break;
+            case "h3":
+                addElement("h3", $("[class*='column-']").last());
+                break;
+            case "h4":
+                addElement("h4", $("[class*='column-']").last());
+                break;
+            case "h5":
+                addElement("h5", $("[class*='column-']").last());
+                break;
+            case "h6":
+                addElement("h6", $("[class*='column-']").last());
                 break;
         }        
     }
