@@ -160,8 +160,7 @@ Wireframe = function()
             bindControls();
             
             if(element == "row") {
-                unselectElements();
-                $(".row").last().addClass("selected");
+                selectElement($(".row").last());
             }
             
             if(isLoading)
