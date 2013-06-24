@@ -23,8 +23,6 @@ Wireframe = function()
     var loadingElements = url.split(":");
     var isLoading = true;
     
-    console.log(loadingElements);
-    
     //load from URL
     load();
     
@@ -312,18 +310,13 @@ Wireframe = function()
                 url += ":";
             }
         });
-        
-        console.log(url);
     }
     
     //load from URL
     function load()
     {              
-        console.log("load");
         //get next element, remove it from the array
         var element = loadingElements.shift();
-        
-        console.log(element);
         
         //load it
         switch (element)
