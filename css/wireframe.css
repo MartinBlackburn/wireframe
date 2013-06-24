@@ -59,12 +59,18 @@
 	background: #fff;
 }
 
+.row.centered {
+    text-align: center;
+}
+
 .row [class*="column-"] {
 	padding: 1em;
 	border: 1px solid #ccc;
     margin-bottom: 1em;
     
     background: #fff;
+    
+    text-align: left;
 }
 
 .altBG {
