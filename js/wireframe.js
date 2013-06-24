@@ -19,12 +19,22 @@ Wireframe = function()
     var defaultAction = $(".defaultAction");
     
     //get URL to load, if any
-    var url = "r:c12:n:r:c6:c6:r:c4:c4:c4:";
-    var loadingElements = url.split(":");
-    var isLoading = true;
+    //EG | #?r:c12:n:r:c6:c6:r:c4:c4:c4:
+    var url = window.location.hash.substring(2);
     
-    //load from URL
-    load();
+    if(url) {
+        var loadingElements = url.split(":");
+        var isLoading = true;
+        
+        //load from URL
+        load();
+    } else {
+        var isLoading = false;
+    }
+    
+    
+    
+    
     
     /*----------------------------------------------------------------------------------------------------------------*\
         CONTEXT MENU
@@ -213,7 +223,7 @@ Wireframe = function()
     //save to URL
     function save()
     {
-        var url = "";
+        var url = "?";
         
         //add rows to URL
         var numRows = $('.row').length;
@@ -298,6 +308,8 @@ Wireframe = function()
                 });
             });
         });
+        
+        window.location.hash = url;
     }
     
     //load from URL
