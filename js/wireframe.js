@@ -19,7 +19,7 @@ Wireframe = function()
     var defaultAction = $(".defaultAction");
     
     //get URL to load, if any
-    var url = "r:c12:r:c6:c6";
+    var url = "r:c12:n:r:c6:c6";
     var loadingElements = url.split(":");
     var isLoading = true;
     
@@ -83,19 +83,9 @@ Wireframe = function()
                 //add an element
                 addElement($(this).data("element"));
                 break;
-            case "center":
-                //center columns with selected row
-                $(".selected").toggleClass("centered");
-                save();
-                break;
             case "remove":
                 //remove selected element
                 $(".selected").remove();
-                save();
-                break;
-            case "toggleBG":
-                //change background color of selected
-                $(".selected").toggleClass("altBG");
                 save();
                 break;
         }
@@ -143,20 +133,24 @@ Wireframe = function()
     /*----------------------------------------------------------------------------------------------------------------*\
         ADD ELEMENT
     \*----------------------------------------------------------------------------------------------------------------*/
-    function addElement(element)
+    function addElement(element, appendTo)
     {
         //select where to append the element
-        if(element == "row") {
-            var addToEnd = body;
+        if(appendTo) {
+            appendTo = appendTo;
+        } else if(element == "row") {
+            appendTo = body;
         } else if(element.indexOf("column-") !== -1) {
-            var addToEnd = $(".row.selected .content");
+            appendTo = $(".row.selected .content");
         } else {
-            var addToEnd = $(".selected");
+            appendTo = $(".selected");
         }
         
         //get the element and add it
         $.get("elements/" + element + ".html", function(data) {
-            addToEnd.append(data);
+            var newElement = $(data);
+            
+            appendTo.append(newElement);
             bindControls();
             
             if(element == "row") {
@@ -228,18 +222,7 @@ Wireframe = function()
         {
             var row = $(this);
             
-            url += "r";
-                        
-            if(row.hasClass("altBG"))
-            {
-                url += "-alt";
-            }
-            if(row.hasClass("centered"))
-            {
-                url += "-c";
-            }
-            
-            url += ":";
+            url += "r:";
             
             //add columns to URL
             var numColumns = row.find("[class*='column-']").length;
@@ -317,8 +300,8 @@ Wireframe = function()
         //get next element, remove it from the array
         var element = loadingElements.shift();
         
-        if(!element)
-        {
+        //set loading to false when no element left
+        if(!element) {
             isLoading = false;
         }
         
@@ -363,6 +346,9 @@ Wireframe = function()
                 break;
             case "c12":
                 addElement("column-12");
+                break;
+            case "n":
+                addElement("nav", $("[class*='column-']").last());
                 break;
         }        
     }
