@@ -331,6 +331,15 @@ Wireframe = function()
                     {
                         url += "h6:";
                     }
+                    
+                    if(element.hasClass("image-portrait"))
+                    {
+                        url += "ip:";
+                    }
+                    if(element.hasClass("image-landscape"))
+                    {
+                        url += "il:";
+                    }
                 });
             });
         });
@@ -415,6 +424,12 @@ Wireframe = function()
                 break;
             case "h6":
                 addElement("h6", $("[class*='column-']").last());
+                break;
+            case "ip":
+                addElement("image-portrait", $("[class*='column-']").last());
+                break;
+            case "il":
+                addElement("image-landscape", $("[class*='column-']").last());
                 break;
         }        
     }
