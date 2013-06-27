@@ -59,10 +59,6 @@
 	background: #fff;
 }
 
-.row.centered {
-    text-align: center;
-}
-
 .row [class*="column-"] {
 	padding: 1em;
 	border: 1px solid #ccc;
@@ -71,10 +67,6 @@
     background: #fff;
     
     text-align: left;
-}
-
-.altBG {
-	background: #EDEDED !important;
 }
 
 .hover {
